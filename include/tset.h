@@ -18,6 +18,7 @@ private:
 public:
   TSet(int mp);
   TSet(const TSet &s);       // конструктор копирования
+  TSet::~TSet(void);
   TSet(const TBitField &bf); // конструктор преобразования типа
   operator TBitField();      // преобразование типа к битовому полю
   // доступ к битам
