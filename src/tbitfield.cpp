@@ -1,14 +1,16 @@
-// ННГУ, ВМК, Курс "Методы программирования-2", С++, ООП
-//
-// tbitfield.cpp - Copyright (c) Гергель В.П. 07.05.2001
-//   Переработано для Microsoft Visual Studio 2008 Сысоевым А.В. (19.04.2015)
-//
-// Битовое поле
 
 #include "tbitfield.h"
 
 TBitField::TBitField(int len)
 {
+	if(len > 0){
+	  BitLen = len;
+	  MemLen = (BitLen + (sizeof(TELEM) * 8 - 1)) / (sizeof(TELEM) * 8);
+	  pMem = new TELEM [MemLen];
+	  for( int i = 0; i < MemLen; ++i)
+	    pMem[i] = 0;
+	}
+	else throw len;
 }
 
 TBitField::TBitField(const TBitField &bf) // конструктор копирования
@@ -17,40 +19,63 @@ TBitField::TBitField(const TBitField &bf) // конструктор копиро
 	MemLen=bf.MemLen;
 	pMem=new TELEM[MemLen];
 	if ( pMem != NULL )
-		for (int i=0; i<MemLen;i++) pMem[i]=bf.pMem[i];
+		for (int i=0; i<MemLen;i++) 
+			pMem[i]=bf.pMem[i];
 }
 
 TBitField::~TBitField()
 {
+	delete [] pMem;
 }
 
 int TBitField::GetMemIndex(const int n) const // индекс Мем для бита n
 {
+	return ( n / ( sizeof(TELEM) * 8 ) );
 }
 
 TELEM TBitField::GetMemMask(const int n) const // битовая маска для бита n
 {
+	int k = n % ( sizeof(TELEM)*8 ); 
+	return ( 1 << k);
 }
 
 // доступ к битам битового поля
 
 int TBitField::GetLength(void) const // получить длину (к-во битов)
 {
-  return 0;
+  return BitLen;
 }
 
 void TBitField::SetBit(const int n) // установить бит
 {
+	if ( (-1 < n) && (n < BitLen) ){  
+		int i = GetMemIndex(n); 
+	    TELEM mask = GetMemMask(n); 
+	    pMem[i] = pMem[i] | mask;
+	}
+	else throw n;
 }
 
 void TBitField::ClrBit(const int n) // очистить бит
 {
+	if ( (-1 < n) && (n < BitLen) ){
+		int i = GetMemIndex(n);
+	    TELEM mask = GetMemMask(n);
+	    pMem[i] = pMem[i] & (~mask);
+	}
+	else throw n;
 }
 
 int TBitField::GetBit(const int n) const // получить значение бита
-{
-  return 0;
+{ 
+	if ( (-1 < n) && (n < BitLen) ) {
+		int i = GetMemIndex(n);
+		TELEM mask = GetMemMask(n) ;
+		return ( mask == ( pMem[i] & GetMemMask(n)) );
+  }
+  else throw n;
 }
+
 
 // битовые операции
 
