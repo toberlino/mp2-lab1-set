@@ -99,7 +99,7 @@ TEST(TBitField, throws_when_clear_bit_with_too_large_index)
 
 TEST(TBitField, can_assign_bitfields_of_equal_size)
 {
-  const int size = 2;
+  const int size = 2000;
   TBitField bf1(size), bf2(size);
   for (int i = 0; i < size; i++)
   {
@@ -150,10 +150,10 @@ TEST(TBitField, compare_equal_bitfields_of_equal_size)
 
   EXPECT_EQ(bf1, bf2);
 }
-
+//гдеяэ
 TEST(TBitField, or_operator_applied_to_bitfields_of_equal_size)
 {
-  const int size = 4;
+  const int size = 400;
   TBitField bf1(size), bf2(size), expBf(size);
   // bf1 = 0011
   bf1.SetBit(2);
@@ -169,10 +169,10 @@ TEST(TBitField, or_operator_applied_to_bitfields_of_equal_size)
 
   EXPECT_EQ(expBf, bf1 | bf2);
 }
-
+//гдеяэ
 TEST(TBitField, or_operator_applied_to_bitfields_of_non_equal_size)
 {
-  const int size1 = 4, size2 = 5;
+  const int size1 = 400, size2 = 500;
   TBitField bf1(size1), bf2(size2), expBf(size2);
   // bf1 = 0011
   bf1.SetBit(2);

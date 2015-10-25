@@ -283,15 +283,26 @@ TEST(TSet, can_intersect_two_sets_of_non_equal_size)
 
 TEST(TSet, check_negation_operator)
 {
-  const int size = 4;
-  TSet set(size), set1(size), expSet(size);
-  // set1 = {1, 3}
-  set.InsElem(1);
-  set.InsElem(3);
-  set1 = ~set;
-  // expSet = {0, 2}
+  const int size = 8;
+  TSet set1(size), set2(size-2), expSet(size);
+  // set1 = {0,3,4,5}
+  set1.InsElem(0);
+  set1.InsElem(3);
+  set1.InsElem(4);
+  set1.InsElem(5);
+  // set2= {0,1,3,5}
+  set2.InsElem(0);
+  set2.InsElem(1);
+  set2.InsElem(3);
+  set2.InsElem(5);
+
+
+  // expSet = {0,2,3,4,5}
   expSet.InsElem(0);
   expSet.InsElem(2);
-
-  EXPECT_EQ(expSet, set1);
+  expSet.InsElem(3);
+  expSet.InsElem(4);
+  expSet.InsElem(5);
+  EXPECT_EQ(expSet, (set1+~set2));
 }
+
